@@ -2,7 +2,7 @@ package ru.alekseiovechkin.votesystem.model;
 
 import java.time.LocalDateTime;
 
-public class Meal extends AbstractBaseEntity {
+public class Meal extends AbstractNamedEntity {
     private Restaurant restaurant;
     private int price;
     private LocalDateTime dateTime;
