@@ -1,7 +1,9 @@
 package ru.alekseiovechkin.votesystem.model;
 
+import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
+@Entity
 public class Meal extends AbstractNamedEntity {
     private Restaurant restaurant;
     private int price;
@@ -10,6 +12,12 @@ public class Meal extends AbstractNamedEntity {
     public Meal() {
     }
 
+    public Meal(Integer id, String name, Restaurant restaurant, int price, LocalDateTime dateTime) {
+        super(id, name);
+        this.restaurant = restaurant;
+        this.price = price;
+        this.dateTime = dateTime;
+    }
 
     public Restaurant getRestaurant() {
         return restaurant;
