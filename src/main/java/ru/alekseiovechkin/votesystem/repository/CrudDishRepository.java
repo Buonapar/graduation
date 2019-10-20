@@ -7,29 +7,30 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import ru.alekseiovechkin.votesystem.model.Meal;
+import ru.alekseiovechkin.votesystem.model.Dish;
 
 import java.time.LocalDate;
 import java.util.List;
 
-public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
+@Transactional(readOnly = true)
+public interface CrudDishRepository extends JpaRepository<Dish, Integer> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Meal meal WHERE meal.id=:id")
+    @EntityGraph(Dish.WITH_PARENTS)
+    @Query("DELETE FROM Dish meal WHERE meal.id=:id")
     int delete(@Param("id") int id);
 
     @Override
     @Transactional
-    Meal save(Meal item);
+    Dish save(Dish item);
 
-    @EntityGraph(Meal.WITH_PARENTS)
-    Meal getById(int id);
+    @EntityGraph(Dish.WITH_PARENTS)
+    Dish getById(int id);
 
-    Meal getMealById(int id);
+    Dish getDishById(int id);
 
-    List<Meal> getMealsByRestaurantId(int restaurantId, Sort sort);
+    List<Dish> getDishesByRestaurantId(int restaurantId, Sort sort);
 
-    List<Meal> getMealsByRestaurantIdAndDate(int restaurantId, LocalDate date);
-}
+    List<Dish> getDishesByRestaurantIdAndDate(int restaurantId, LocalDate date);
 }

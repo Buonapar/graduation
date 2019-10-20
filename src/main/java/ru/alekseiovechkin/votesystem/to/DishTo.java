@@ -2,16 +2,16 @@ package ru.alekseiovechkin.votesystem.to;
 
 import java.time.LocalDate;
 
-public class MealTo extends AbstractBaseTo {
+public class DishTo extends AbstractBaseTo {
     private String name;
     private  int price;
     private int restaurantId;
     private LocalDate date;
 
-    public MealTo() {
+    public DishTo() {
     }
 
-    public MealTo(Integer id, String name, int price, int restaurantId, LocalDate date) {
+    public DishTo(Integer id, String name, int price, int restaurantId, LocalDate date) {
         super(id);
         this.name = name;
         this.price = price;
@@ -37,7 +37,7 @@ public class MealTo extends AbstractBaseTo {
 
     @Override
     public String toString() {
-        return "MealTo{" +
+        return "DishTo{" +
                 "name='" + name + '\'' +
                 ", price=" + price +
                 ", restaurantId=" + restaurantId +

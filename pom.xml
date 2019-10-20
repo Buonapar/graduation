@@ -15,8 +15,12 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <spring.version>5.1.9.RELEASE</spring.version>
         <spring-data-jpa.version>2.1.10.RELEASE</spring-data-jpa.version>
+        <spring.security.version>5.2.0.RELEASE</spring.security.version>
         <jackson-json.version>2.9.9</jackson-json.version>
+        <tomcat.version>9.0.22</tomcat.version>
 
         <!-- Hibernate -->
         <hibernate.version>5.4.3.Final</hibernate.version>
@@ -26,6 +30,9 @@
         <!-- Logging -->
         <logback.version>1.2.3</logback.version>
         <slf4j.version>1.7.25</slf4j.version>
+
+        <!--Tools-->
+        <ehcache.version>3.7.1</ehcache.version>
 
     </properties>
 
@@ -52,6 +59,27 @@
             <artifactId>spring-data-jpa</artifactId>
             <version>${spring-data-jpa.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+
+        <!--security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
 
         <!--- ORM -->
         <dependency>
@@ -68,6 +96,45 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jcache</artifactId>
             <version>${hibernate.version}</version>
+        </dependency>
+
+        <!-- Cache -->
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <version>${ehcache.version}</version>
+        </dependency>
+
+        <!--https://medium.com/criciumadev/its-time-migrating-to-java-11-5eb3868354f9-->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.4.0-b180830.0438</version>
+        </dependency>
+
+        <!--Web-->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>5.2.0.RELEASE</version>
         </dependency>
 
         <!--- DB -->
@@ -121,5 +188,14 @@
     </profiles>
 
     <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
     </dependencyManagement>
 </project>

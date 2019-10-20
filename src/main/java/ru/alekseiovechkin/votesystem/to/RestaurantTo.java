@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RestaurantTo extends AbstractBaseTo{
     private String name;
-    private List<MealTo> menu;
+    private List<DishTo> menu;
 
     public String getName() {
         return name;
