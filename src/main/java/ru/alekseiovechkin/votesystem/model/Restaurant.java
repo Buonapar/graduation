@@ -4,27 +4,35 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Table(name = "restaurants", uniqueConstraints = @UniqueConstraint(columnNames = "name", name = "restaurants_unique_name_idx"))
-@NamedEntityGraph(
-        name = Restaurant.WITH_MENU,
-        attributeNodes = @NamedAttributeNode("menu")
-)
+@Table(name = "restaurant")
 public class Restaurant extends AbstractNamedEntity{
-    public static final String WITH_MENU = "Restaurant.withMenu";
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant")
-    @OrderBy("date desc")
-    private List<Dish> menu;
+//    @NotBlank
+//    @Column(name = "restaurant_name")
+//    @Size(min = 2, max = 100)
+//    private String name;
+
+    @NotNull
+    @Column(name = "date")
+    private LocalDate date;
+
+    @NotBlank
+    @Column(name = "menu")
+    private String menu;
 
     public Restaurant() {
     }
 
-    public Restaurant(Integer id, String name, List<Dish> menu) {
+    public Restaurant(Integer id, String name, @NotNull LocalDate date, @NotBlank String menu) {
         super(id, name);
+        this.date = date;
         this.menu = menu;
     }
 

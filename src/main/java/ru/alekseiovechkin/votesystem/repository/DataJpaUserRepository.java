@@ -1,33 +1,41 @@
 package ru.alekseiovechkin.votesystem.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
 import ru.alekseiovechkin.votesystem.model.User;
 
 import java.util.List;
-
-public class DataJpaUserRepository {
+@Repository
+public class DataJpaUserRepository implements UserRepository{
     private static final Sort SORT_BY_DATE = new Sort(Sort.Direction.DESC, "registered");
 
-    @Autowired
     private CrudUserRepository repository;
 
-    public User save(User user) {
-        return repository.save(user);
+    public DataJpaUserRepository(CrudUserRepository crudUserRepository) {
+        this.repository = crudUserRepository;
     }
 
+    @Override
     public User get(int id) {
-        return repository.getById(id);
+        return repository.findById(id).orElse(null);
     }
 
-    public boolean delete(int id) {
-        return repository.deleteUserById(id) != 0;
+    @Override
+    public void create(User user) {
+        repository.save(user);
     }
 
-    public User getByEmail(String email) {
-        return repository.getUserByEmail(email);
+    @Override
+    public void update(User user) {
+        repository.save(user);
     }
 
+    @Override
+    public void delete(int id) {
+        repository.delete(id);
+    }
+
+    @Override
     public List<User> getAll() {
         return repository.findAll(SORT_BY_DATE);
     }

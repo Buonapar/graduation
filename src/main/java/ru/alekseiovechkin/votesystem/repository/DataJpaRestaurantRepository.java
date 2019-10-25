@@ -1,37 +1,38 @@
 package ru.alekseiovechkin.votesystem.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import ru.alekseiovechkin.votesystem.model.Restaurant;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public class DataJpaRestaurantRepository {
-    private static final Sort SORT_BY_NAME = new Sort(Sort.Direction.ASC, "name");
+public class DataJpaRestaurantRepository implements RestaurantRepository {
+    private static final Sort SORT_DATE_NAME = new Sort(Sort.Direction.ASC, "date", "name");
 
-    @Autowired
-    private CrudRestaurantRepository repository;
+    private final CrudRestaurantRepository repository;
 
-    public Restaurant save(Restaurant restaurant) {
-        return repository.save(restaurant);
+    public DataJpaRestaurantRepository(CrudRestaurantRepository crudRestaurantRepository) {
+        this.repository = crudRestaurantRepository;
     }
 
+    @Override
     public Restaurant get(int id) {
-        return repository.getById(id);
+        return repository.findById(id).orElse(null);
     }
 
-    public boolean delete(int id) {
-        return repository.deleteDishById(id) != 0;
+    @Override
+    public void create(Restaurant restaurant) {
+        repository.save(restaurant);
     }
 
+    @Override
+    public void update(Restaurant restaurant) {
+        repository.save(restaurant);
+    }
+
+    @Override
     public List<Restaurant> getAll() {
-        return repository.findAll(SORT_BY_NAME);
-    }
-
-    public List<Restaurant> getAllByDishDate(LocalDate date) {
-        return repository.getAllByMenuDate(date, SORT_BY_NAME);
+        return repository.findAll(SORT_DATE_NAME);
     }
 }

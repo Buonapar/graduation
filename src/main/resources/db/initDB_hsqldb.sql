@@ -1,44 +1,46 @@
-create table if not exists restaurant_with_dish
+--drop table if exists USER_ROLES;
+--drop table if exists RESTAURANT;
+--drop table if exists USERS;
+--drop table if exists VOTE;
+
+create table RESTAURANT
 (
-    id identity not null
-        constraint restaurant_with_dish_pk
-            primary key,
-    restaurant_name char(200) not null,
-    date timestamp not null,
-    menu varchar(255) not null
+    ID              INTEGER identity constraint RESTAURANT_PK
+                                        primary key,
+    RESTAURANT_NAME CHARACTER(200) not null,
+    DATE            TIMESTAMP      not null,
+    MENU            VARCHAR(255)   not null,
+    constraint RESTAURANT_RESTAURANT_NAME_DATE_UINDEX
+        unique (RESTAURANT_NAME, DATE)
 );
 
-create unique index restaurant_with_dish_restaurant_name_date_uindex
-    on restaurant_with_dish (restaurant_name, date);
-
-create table if not exists vote
+create table USERS
 (
-	id identity not null
-		constraint vote_pk
-			primary key,
-	restaurant_id integer not null
-		constraint VOTE_RESTAURANT_WITH_DISH_ID_FK
-			references restaurant_with_dish,
-	user_id integer not null
-		constraint vote_users_id_fk
-			references users,
-	date timestamp default now() not null
+    ID         INTEGER identity constraint USERS_PK
+                                             primary key,
+    NAME       VARCHAR(255)                     not null,
+    EMAIL      VARCHAR(255)                     not null
+                    constraint USERS_EMAIL_UINDEX unique,
+    PASSWORD   VARCHAR(255)                     not null,
+    REGISTERED TIMESTAMP default LOCALTIMESTAMP not null,
+    ENABLED    BOOLEAN default TRUE             not null
 );
 
-create table if not exists users
+create table USER_ROLES
 (
-	id identity not null
-		constraint users_pk
-			primary key,
-	name varchar(255) not null,
-	email varchar(255) not null,
-	registered timestamp default now() not null,
-	role varchar(255) not null,
-	enabled boolean default true not null
+    USER_ID INTEGER      not null
+        constraint USER_ROLES_USER_ID_FK references USERS,
+    ROLE    VARCHAR(255) not null,
+        constraint USER_ROLES_UINDEX unique (USER_ID, ROLE)
 );
 
-create unique index if not exists users_email_uindex
-	on users (email);
-
-create unique index if not exists users_name_role_uindex
-	on users (name, role);
+create table VOTE
+(
+    ID            INTEGER identity constraint VOTE_PK primary key,
+    RESTAURANT_ID INTEGER                          not null
+                     constraint VOTE_RESTAURANT_ID_FK
+                                  references RESTAURANT,
+    USER_ID       INTEGER                          not null
+                     constraint VOTE_USERS_ID_FK references USERS,
+    DATE          TIMESTAMP default LOCALTIMESTAMP not null
+);

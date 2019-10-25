@@ -1,50 +1,44 @@
-create table if not exists restaurant_with_dish
+drop table if exists USER_ROLES;
+drop table if exists VOTE;
+drop table if exists USERS;
+drop table if exists RESTAURANT;
+
+create table RESTAURANT
 (
-	id serial not null
-		constraint restaurant_with_dish_pk
-			primary key,
-	restaurant_name char(200) not null,
-	date timestamp not null,
-	menu varchar not null
+    ID              serial constraint RESTAURANT_PK
+        primary key,
+    NAME            VARCHAR(255) not null,
+    DATE            TIMESTAMP      not null,
+    MENU            VARCHAR(255)   not null
 );
 
-create unique index restaurant_with_dish_restaurant_name_date_uindex
-	on restaurant_with_dish (restaurant_name, date);
-
-alter table restaurant_with_dish owner to "user";
-
-create table vote
+create table USERS
 (
-	id serial not null
-		constraint vote_pk
-			primary key,
-	restaurant_id integer not null
-		constraint vote_restaurant_with_dish_id_fk
-			references restaurant_with_dish,
-	user_id integer not null
-		constraint vote_users_id_fk
-			references users,
-	date timestamp default now() not null
+    ID         serial constraint USERS_PK
+        primary key,
+    NAME       VARCHAR(255)                     not null,
+    EMAIL      VARCHAR(255)                     not null
+        constraint USERS_EMAIL_UINDEX unique,
+    PASSWORD   VARCHAR(255)                     not null,
+    REGISTERED TIMESTAMP default LOCALTIMESTAMP not null,
+    ENABLED    BOOLEAN default TRUE             not null
 );
 
-alter table vote owner to "user";
-
-create table if not exists users
+create table USER_ROLES
 (
-	id serial not null
-		constraint users_pk
-			primary key,
-	name varchar not null,
-	email varchar not null,
-	registered timestamp default now() not null,
-	role varchar not null,
-	enabled boolean default true not null
+    USER_ID INTEGER      not null
+        constraint USER_ROLES_USER_ID_FK references USERS ON DELETE CASCADE,
+    ROLE    VARCHAR(255) not null,
+    constraint USER_ROLES_UINDEX unique (USER_ID, ROLE)
 );
 
-alter table users owner to "user";
-
-create unique index if not exists users_email_uindex
-	on users (email);
-
-create unique index if not exists users_name_role_uindex
-	on users (name, role);
+create table VOTE
+(
+    ID            serial constraint VOTE_PK primary key,
+    RESTAURANT_ID INTEGER                          not null
+        constraint VOTE_RESTAURANT_ID_FK
+            references RESTAURANT,
+    USER_ID       INTEGER                          not null
+        constraint VOTE_USERS_ID_FK references USERS ON DELETE CASCADE,
+    DATE          TIMESTAMP default LOCALTIMESTAMP not null
+);

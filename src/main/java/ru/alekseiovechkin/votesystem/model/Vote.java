@@ -2,41 +2,29 @@ package ru.alekseiovechkin.votesystem.model;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import ru.alekseiovechkin.votesystem.View;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
-@Table(name = "user_votes", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "date"}, name = "users_votes_unique_date_idx"))
-@NamedEntityGraph(
-        name = Vote.WITH_PARENTS,
-        attributeNodes = {
-                @NamedAttributeNode(value = "user", subgraph = "roles"),
-                @NamedAttributeNode(value = "restaurant", subgraph = "menu")
-        },
-        subgraphs = {
-                @NamedSubgraph(name = "roles", attributeNodes = @NamedAttributeNode("roles")),
-                @NamedSubgraph(name = "menu", attributeNodes = @NamedAttributeNode("menu"))
-        }
-)
+@Table(name = "vote")
 public class Vote extends AbstractBaseEntity {
-    public static final String WITH_PARENTS = "Vote.withParents";
 
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "global_seq", foreignKeyDefinition = "START WITH 100"))
-    @OneToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotNull(groups = View.Persist.class)
-    private User user;
-
-    @JoinColumn(name = "restaurant_id", foreignKey = @ForeignKey(name = "global_seq", foreignKeyDefinition = "START WITH 100"))
+    @JoinColumn(name = "restaurant_id")
     @OneToOne(fetch = FetchType.EAGER)
     private Restaurant restaurant;
 
-    @Column(name = "date", nullable = false, columnDefinition = "DATE DEFAULT now()")
+    @JoinColumn(name = "user_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    private LocalDate date;
+    private User user;
+
+    @Column(name = "date", nullable = false)
+    @NotNull
+    private LocalDateTime date;
 
     public Vote() {
     }
@@ -45,7 +33,7 @@ public class Vote extends AbstractBaseEntity {
         this(v.getId(), v.getUser(), v.getRestaurant(), v.getDate());
     }
 
-    public Vote(Integer id, User user, Restaurant restaurant, LocalDate time) {
+    public Vote(Integer id, User user, Restaurant restaurant, LocalDateTime time) {
         super(id);
         this.user = user;
         this.restaurant = restaurant;
@@ -68,12 +56,28 @@ public class Vote extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Vote vote = (Vote) o;
+        return restaurant.equals(vote.restaurant) &&
+                user.equals(vote.user) &&
+                date.equals(vote.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), restaurant, user, date);
     }
 
     @Override
