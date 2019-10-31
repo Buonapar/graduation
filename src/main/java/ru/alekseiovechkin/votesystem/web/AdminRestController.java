@@ -34,4 +34,15 @@ public class AdminRestController {
     public List<User> getAll() {
         return repository.getAll();
     }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public User create(@RequestBody User user) {
+        return repository.create(user);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void update(@RequestBody User user) {
+        repository.update(user);
+    }
 }

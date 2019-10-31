@@ -1,12 +1,17 @@
 package ru.alekseiovechkin.votesystem.model;
 
-import org.springframework.data.domain.Persistable;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import ru.alekseiovechkin.votesystem.HasId;
 
 import javax.persistence.*;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public class AbstractBaseEntity implements Persistable<Integer> {
+@JsonAutoDetect(fieldVisibility = ANY, getterVisibility = NONE, isGetterVisibility = NONE, setterVisibility = NONE)
+public class AbstractBaseEntity implements HasId {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

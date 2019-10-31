@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.alekseiovechkin.votesystem.model.Restaurant;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,5 +47,10 @@ public class DataJpaRestaurantRepositoryTest {
         List<Restaurant> actual = repository.getAll();
         List<Restaurant> expected = Arrays.asList(restaurant1, restaurant4);
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getByDate() {
+        List<Restaurant> restaurants = repository.getByDate(LocalDate.parse("2019-10-12"));
     }
 }

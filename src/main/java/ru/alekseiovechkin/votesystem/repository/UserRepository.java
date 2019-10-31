@@ -8,7 +8,7 @@ public interface UserRepository {
 
     User get(int id);
 
-    void create(User user);
+    User create(User user);
 
     void update(User user);
 

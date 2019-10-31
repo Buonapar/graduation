@@ -4,6 +4,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import ru.alekseiovechkin.votesystem.model.Restaurant;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -22,8 +23,8 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public void create(Restaurant restaurant) {
-        repository.save(restaurant);
+    public Restaurant create(Restaurant restaurant) {
+        return repository.save(restaurant);
     }
 
     @Override
@@ -34,5 +35,9 @@ public class DataJpaRestaurantRepository implements RestaurantRepository {
     @Override
     public List<Restaurant> getAll() {
         return repository.findAll(SORT_DATE_NAME);
+    }
+
+    public List<Restaurant> getByDate(LocalDate date) {
+        return repository.getByDate(date);
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 public interface VoteRepository {
     Vote get(int id);
 
-    void create(Vote vote);
+    Vote create(Vote vote);
 
     void update(Vote vote);
 

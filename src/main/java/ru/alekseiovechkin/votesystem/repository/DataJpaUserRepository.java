@@ -1,12 +1,15 @@
 package ru.alekseiovechkin.votesystem.repository;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
+import ru.alekseiovechkin.votesystem.AuthorizedUser;
 import ru.alekseiovechkin.votesystem.model.User;
 
 import java.util.List;
-@Repository
-public class DataJpaUserRepository implements UserRepository{
+@Repository("userRepository")
+public class DataJpaUserRepository implements UserRepository, UserDetailsService {
     private static final Sort SORT_BY_DATE = new Sort(Sort.Direction.DESC, "registered");
 
     private CrudUserRepository repository;
@@ -21,8 +24,8 @@ public class DataJpaUserRepository implements UserRepository{
     }
 
     @Override
-    public void create(User user) {
-        repository.save(user);
+    public User create(User user) {
+        return repository.save(user);
     }
 
     @Override
@@ -38,5 +41,14 @@ public class DataJpaUserRepository implements UserRepository{
     @Override
     public List<User> getAll() {
         return repository.findAll(SORT_BY_DATE);
+    }
+
+    @Override
+    public AuthorizedUser loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = repository.getByEmail(email.toLowerCase());
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
     }
 }
