@@ -6,24 +6,26 @@ import java.util.Objects;
 public class VoteTo extends AbstractBaseTo {
 
     private LocalDateTime dateTime;
-    private int restarauntId;
+    private int restaurantId;
     private int userId;
 
     public VoteTo() {
     }
 
-    public VoteTo(Integer id, int restarauntId) {
-        super(id);
-        this.restarauntId = restarauntId;
-        dateTime = LocalDateTime.now();
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setRestaurantId(int restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
     public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public int getRestarauntId() {
-        return restarauntId;
+    public int getRestaurantId() {
+        return restaurantId;
     }
 
     public int getUserId() {
@@ -39,21 +41,21 @@ public class VoteTo extends AbstractBaseTo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         VoteTo voteTo = (VoteTo) o;
-        return restarauntId == voteTo.restarauntId &&
+        return restaurantId == voteTo.restaurantId &&
                 userId == voteTo.userId &&
                 dateTime.equals(voteTo.dateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(dateTime, restarauntId, userId);
+        return Objects.hash(dateTime, restaurantId, userId);
     }
 
     @Override
     public String toString() {
         return "VoteTo{" +
                 "dateTime=" + dateTime +
-                ", restarauntId=" + restarauntId +
+                ", restaurantId=" + restaurantId +
                 ", userId=" + userId +
                 ", id=" + id +
                 '}';

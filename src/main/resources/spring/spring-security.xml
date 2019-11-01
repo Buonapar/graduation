@@ -5,13 +5,13 @@
 	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
     <http pattern="/resources/**" security="none"/>
-<!--    <http pattern="/webjars/**" security="none"/>-->
 
     <http pattern="/rest/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">
         <http-basic/>
         <intercept-url pattern="/rest/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/rest/restaurant/all/**" access="isAuthenticated()"/>
+        <intercept-url pattern="/rest/restaurant/byDate/**" access="isAuthenticated()"/>
         <intercept-url pattern="/rest/restaurant/**" access="hasRole('ROLE_ADMIN')"/>
-        <intercept-url pattern="/rest/restaurant/**" method="GET" access="isAuthenticated()"/>
         <intercept-url pattern="/rest/vote/all/**" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/rest/vote/**" method="POST" access="isAuthenticated()"/>
         <intercept-url pattern="/rest/vote/**" method="PUT" access="isAuthenticated()"/>
@@ -24,10 +24,6 @@
     <authentication-manager>
         <authentication-provider user-service-ref="userRepository">
             <password-encoder ref="noopEncoder"/>
-<!--            <user-service>-->
-<!--                <user name="user@yandex.ru" password="password" authorities="ROLE_USER"/>-->
-<!--                <user name="admin@gmail.com" password="admin" authorities="ROLE_ADMIN"/>-->
-<!--            </user-service>-->
         </authentication-provider>
     </authentication-manager>
 </beans:beans>

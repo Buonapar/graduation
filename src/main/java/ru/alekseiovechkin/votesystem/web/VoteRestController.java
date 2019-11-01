@@ -1,17 +1,21 @@
 package ru.alekseiovechkin.votesystem.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.alekseiovechkin.votesystem.model.Vote;
 import ru.alekseiovechkin.votesystem.repository.DataJpaVoteRepository;
 import ru.alekseiovechkin.votesystem.service.VoteService;
+import ru.alekseiovechkin.votesystem.to.VoteTo;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = VoteRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class VoteRestController {
+    protected Logger log = LoggerFactory.getLogger(VoteRestController.class);
     public static final String REST_URL = "/rest/vote";
 
     private DataJpaVoteRepository repository;
@@ -24,17 +28,20 @@ public class VoteRestController {
 
     @GetMapping("/all")
     public List<Vote> getAll() {
+        log.info("Get all votes");
         return repository.getAll();
     }
 
-    @PostMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Vote create(@PathVariable int id) {
-        return service.create(id, SecurityUtil.authUserId());
+    @PostMapping( consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Vote create(@RequestBody VoteTo voteTo) {
+        log.info("Created vote {}", voteTo);
+        return service.create(voteTo, SecurityUtil.authUserId());
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Vote vote) {
-        repository.update(vote);
+    public void update(@RequestBody VoteTo voteTo) {
+        log.info("Update {} with id {}", voteTo, voteTo.getId());
+        service.update(voteTo);
     }
 }

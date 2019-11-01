@@ -1,17 +1,15 @@
---drop table if exists USER_ROLES;
---drop table if exists RESTAURANT;
---drop table if exists USERS;
---drop table if exists VOTE;
+drop table USER_ROLES if exists;
+drop table VOTE if exists;
+drop table USERS if exists;
+drop table RESTAURANT if exists;
 
 create table RESTAURANT
 (
     ID              INTEGER identity constraint RESTAURANT_PK
                                         primary key,
-    RESTAURANT_NAME CHARACTER(200) not null,
+    NAME            CHARACTER(200) not null,
     DATE            TIMESTAMP      not null,
     MENU            VARCHAR(255)   not null,
-    constraint RESTAURANT_RESTAURANT_NAME_DATE_UINDEX
-        unique (RESTAURANT_NAME, DATE)
 );
 
 create table USERS
@@ -29,9 +27,8 @@ create table USERS
 create table USER_ROLES
 (
     USER_ID INTEGER      not null
-        constraint USER_ROLES_USER_ID_FK references USERS,
+        constraint USER_ROLES_USER_ID_FK references USERS ON DELETE CASCADE,
     ROLE    VARCHAR(255) not null,
-        constraint USER_ROLES_UINDEX unique (USER_ID, ROLE)
 );
 
 create table VOTE
@@ -41,6 +38,6 @@ create table VOTE
                      constraint VOTE_RESTAURANT_ID_FK
                                   references RESTAURANT,
     USER_ID       INTEGER                          not null
-                     constraint VOTE_USERS_ID_FK references USERS,
+                     constraint VOTE_USERS_ID_FK references USERS ON DELETE CASCADE,
     DATE          TIMESTAMP default LOCALTIMESTAMP not null
 );

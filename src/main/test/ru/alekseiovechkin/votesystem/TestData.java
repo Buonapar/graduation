@@ -10,15 +10,15 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class TestData {
-    public static final int REST_ID1 = 1;
-    public static final int REST_ID2 = 2;
-    public static final int REST_ID3 = 3;
-    public static final int ADMIN_ID = 1;
-    public static final int USER_ID1 = 2;
-    public static final int USER_ID2 = 3;
-    public static final int VOTE_ID1 = 1;
-    public static final int VOTE_ID2 = 2;
-    public static final int VOTE_ID3 = 3;
+    public static final int REST_ID1 = 0;
+    public static final int REST_ID2 = 1;
+    public static final int REST_ID3 = 2;
+    public static final int ADMIN_ID = 0;
+    public static final int USER_ID1 = 1;
+    public static final int USER_ID2 = 2;
+    public static final int VOTE_ID1 = 0;
+    public static final int VOTE_ID2 = 1;
+    public static final int VOTE_ID3 = 2;
     public static final Restaurant restaurant1 =
             new Restaurant(REST_ID1, "Astoria",
                     LocalDate.parse("2019-10-12"),
