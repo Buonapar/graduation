@@ -7,7 +7,7 @@ create table RESTAURANT
 (
     ID              INTEGER identity constraint RESTAURANT_PK
                                         primary key,
-    NAME            CHARACTER(200) not null,
+    NAME            VARCHAR(255)   not null,
     DATE            TIMESTAMP      not null,
     MENU            VARCHAR(255)   not null,
 );
