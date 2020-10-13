@@ -35,7 +35,7 @@
         <ehcache.version>3.7.1</ehcache.version>
 
         <!--    Tests  -->
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
 
     </properties>
 
